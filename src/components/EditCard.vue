@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-card>
+    <v-card class="pa-2">
       <form @submit.prevent="updateCard">
         <v-layout row>
           <v-flex xs12 sm6 offset-sm3>
@@ -63,22 +63,28 @@
 
         <v-layout row>
           <v-flex xs12 sm12 id="buttons" class="mt-3 text-xs-center text-sm-right">
-            <v-btn
+            <v-btn xs4
               type="submit"
               class="blue"
-              width="200"
               dark
-            >Update Card
+            >Update
               <v-icon>update</v-icon>
             </v-btn>
 
-            <v-btn
+            <v-btn xs4
               @click="freeCard"
               type="submit"
               class="green"
-              width="200"
               dark
-            >Free card
+            >Free
+              <v-icon>credit_card</v-icon>
+            </v-btn>
+
+            <v-btn xs4
+              @click="removeCard"
+              class="red"
+              dark
+            >Remove
               <v-icon>credit_card</v-icon>
             </v-btn>
 
@@ -124,6 +130,10 @@
         freeCard(){
           this.owner = ""
           this.cohort = ""
+        },
+        removeCard(){
+          this.$store.dispatch('removeCard', {id: this.id})
+            .then(() => this.$router.go(-1))
         }
       }
     }

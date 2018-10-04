@@ -29,5 +29,6 @@ export default new Router({
       name: 'addcard',
       component: AddCard
     }
-  ]
+  ],
+  mode: "history"
 })

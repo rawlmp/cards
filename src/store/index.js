@@ -9,7 +9,8 @@ export const store = new Vuex.Store({
   state: {
     cards: [
       // {id: 1, number: 1234, owner: "Peter", cohort: "Java 105"}
-    ]
+    ],
+    loading: false
   },
   mutations: {
     addCard(state, payload) {
@@ -17,6 +18,9 @@ export const store = new Vuex.Store({
     },
     setCards(state, payload) {
       state.cards = payload
+    },
+    setLoading(state, payload) {
+      state.loading = payload
     }
   },
   getters: {
@@ -43,10 +47,14 @@ export const store = new Vuex.Store({
           return card.id == cardId
         })
       }
+    },
+    loading(state){
+      return state.loading
     }
   },
   actions: {
     loadCards({commit}) {
+      commit("setLoading", true)
       firebase.database().ref('cards').once("value")
         .then(data => {
           let cards = []
@@ -60,6 +68,8 @@ export const store = new Vuex.Store({
             })
           }
           commit('setCards', cards)
+          commit("setLoading", false)
+
         })
 
     },
@@ -79,9 +89,13 @@ export const store = new Vuex.Store({
         .catch()
     },
     updateCard({commit, dispatch}, payload){
-
       firebase.database().ref("cards/" + payload.id).update(payload)
       dispatch('loadCards')
+    },
+    removeCard({commit, dispatch}, payload){
+      firebase.database().ref("cards/" + payload.id).remove()
+        .then(() => dispatch('loadCards'))
+
     }
   }
 })

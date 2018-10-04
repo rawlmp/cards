@@ -1,6 +1,6 @@
 <template>
-  <v-container class="pt-0">
-    <v-toolbar dark class="green">
+  <v-container fluid class="pa-0">
+    <v-toolbar xs12 dark class="green">
       <v-text-field
         flat
         label="Search card"
@@ -19,7 +19,15 @@
     </v-toolbar>
 
     <v-layout row wrap>
-      <v-alert v-if="cards.length == 0" :value="true" type="error">
+      <v-layout row wrap v-if="loading">
+        <v-flex xs12 sm6 offset-sm3>
+          <h3>Getting Cards...</h3>
+        </v-flex>
+        <v-flex xs12 sm6 offset-sm3>
+          <v-progress-linear :indeterminate="true"></v-progress-linear>
+        </v-flex>
+      </v-layout>
+      <v-alert v-if="cards.length == 0 && !loading" :value="true" type="error">
         No cards in the database
       </v-alert>
       <v-flex xs10 offset-xs1 sm8 offset-sm2 v-for="card in cards" :key="card.id" class="my-1">
@@ -85,6 +93,9 @@
                 return this.$store.getters.sortedCardsNumber.filter(card => JSON.stringify(card).toLowerCase().includes(this.search.toLowerCase()))
             }
           },
+          loading(){
+            return this.$store.getters.loading
+          }
       }
     }
 </script>
