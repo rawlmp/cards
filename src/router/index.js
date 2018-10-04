@@ -14,6 +14,11 @@ export default new Router({
       component: Cards
     },
     {
+      path: '/',
+      name: 'home',
+      component: Cards
+    },
+    {
       path: '/card/:id',
       name: 'card',
       props: true,
